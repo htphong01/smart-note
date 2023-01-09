@@ -25,7 +25,7 @@ class NoteController {
    */
   noteSlug = async (req, res) => {
     try {
-      const note = await Note.find({ slug: req.params.slug });
+      const note = await Note.findOne({ slug: req.params.slug });
       if(!note) {
         return res.sendStatus(404);
       }

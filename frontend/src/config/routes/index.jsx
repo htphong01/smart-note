@@ -3,6 +3,7 @@ import LoginPage from '@pages/Login';
 import RegisterPage from '@pages/Register';
 import HomePage from '@pages/Home';
 import UserPage from '@pages/User';
+import NotePage from '@pages/Note';
 
 export const siteRoutes = [
   {
@@ -26,6 +27,11 @@ export const userRoutes = [
   {
     path: '/user',
     page: <UserPage />,
+    isPrivate: true,
+  },
+  {
+    path: '/user/:slug',
+    page: <NotePage />,
     isPrivate: true,
   },
 ];

@@ -1,6 +1,20 @@
 * {
   box-sizing: border-box;
   font-size: 16px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sun-editor {
+  margin-top: 46px;
+}
+
+.se-toolbar.sun-editor-common.se-toolbar-sticky {
+  top: 47px !important;
+}
+
+.se-wrapper-inner.se-wrapper-wysiwyg.sun-editor-editable,
+.se-wrapper-inner.se-wrapper-code {
+  height: calc(100vh - 124px) !important;
 }
 
 html, 

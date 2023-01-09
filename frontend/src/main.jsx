@@ -6,6 +6,7 @@ import { store, persistor } from "./app/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
+import 'suneditor/dist/css/suneditor.min.css';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>

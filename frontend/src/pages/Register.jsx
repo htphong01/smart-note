@@ -1,6 +1,6 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Navigate  } from 'react-router-dom';
 import Header from "@components/auth/Header";
 import Body from "@components/auth/Body";
 import authApi from "@api/auth";
@@ -11,6 +11,8 @@ import { setToken } from '@utils/localstorage';
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAuth = useSelector(state => state.auth.isAuth);
+  if(isAuth) return <Navigate to="/user" state={{ from: '/' }} />;
 
   const responseFacebook = async (data) => {
     try {
@@ -29,8 +31,7 @@ export default function Register() {
       navigate('/user');
       return;
     } catch (error) {
-      console.log("error", error);
-      toast.error();
+      toast.error(error.response.statusText);
     }
   };
 
