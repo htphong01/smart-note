@@ -4,6 +4,7 @@ import RegisterPage from '@pages/Register';
 import HomePage from '@pages/Home';
 import UserPage from '@pages/User';
 import NotePage from '@pages/Note';
+import SharePage from '@pages/Share';
 
 export const siteRoutes = [
   {
@@ -19,6 +20,11 @@ export const siteRoutes = [
   {
     path: '/register',
     page: <RegisterPage />,
+    isPrivate: false,
+  },
+  {
+    path: '/share/:slug',
+    page: <SharePage />,
     isPrivate: false,
   },
 ]

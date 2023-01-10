@@ -33,3 +33,7 @@ a,
 a:hover {
   text-decoration: none;
 }
+
+.Toastify__toast-container.Toastify__toast-container--top-right {
+  z-index: 9999999999;
+}

@@ -24,6 +24,18 @@ const toast = {
       theme: 'colored',
     });
   },
+  info: (text) => {
+    toastFunc.info(text, {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      });
+  }
 };
 
 export default toast;

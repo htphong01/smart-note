@@ -6,14 +6,19 @@ class PageController {
    * @dev [POST] /api/v1/pages
    */
   create = async (req, res) => {
+    const user = req.user;
     try {
-      const { title, user } = req.body;
-      if ((!title, !user)) {
+      const { title } = req.body;
+      if ((!title)) {
         res.statusMessage = 'Invalid information!';
         return res.sendStatus(400);
       }
 
-      const newPage = await Page.create(req.body);
+      console.log(req.user);
+
+      const data = {...req.body, user: user._id};
+
+      const newPage = await Page.create(data);
       res.json(newPage.toJSON());
     } catch (error) {
       res.sendStatus(500);

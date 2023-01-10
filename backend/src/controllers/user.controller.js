@@ -20,6 +20,7 @@ class UserController {
       }
 
       const { accessToken, refreshToken } = generateToken({
+        _id: user._id,
         socialId: user.socialId,
         provider: user.provider,
       });

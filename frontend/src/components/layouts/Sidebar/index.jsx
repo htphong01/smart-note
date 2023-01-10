@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,8 @@ import {
 } from "@app/slices/pageSlice";
 import { logout } from "@app/slices/authSlice";
 import { reset as resetNote } from "@app/slices/noteSlice";
+import InputDialog from "@components/common/InputDialog";
+import { DIALOG_TYPE } from "@constants/enum";
 
 const defaultImage =
   "https://www.iconpacks.net/icons/1/free-document-icon-901-thumb.png";
@@ -22,6 +24,15 @@ export default function SideBar() {
 
   const user = useSelector((state) => state.auth.user);
   const pages = useSelector((state) => state.pages);
+  const [dialog, setDialog] = useState({
+    active: false,
+    title: "",
+    type: "",
+    data: {
+      _id: "",
+      text: "",
+    },
+  });
 
   const handlePageItemClick = async (pageId) => {
     if (!pages[pageId].isOpen) {
@@ -31,7 +42,77 @@ export default function SideBar() {
     dispatch(togglePage(pageId));
   };
 
-  const handleAddPageClick = () => {};
+  const handleResetDialog = () => {
+    setDialog({
+      active: false,
+      title: "",
+      type: "",
+      data: {
+        _id: "",
+        text: "",
+      },
+    });
+  };
+
+  const handleOpenDialog = (type, data) => {
+    const newDialog = {
+      active: true,
+      title: "",
+      type,
+      data: {
+        _id: "",
+        text: "",
+      },
+    };
+    switch (type) {
+      case DIALOG_TYPE.RENAME_PAGE:
+        newDialog.title = "Rename page";
+        newDialog.data = {
+          _id: data._id,
+          text: data.title,
+        };
+        break;
+      case DIALOG_TYPE.RENAME_NOTE:
+        newDialog.title = "Rename note";
+        newDialog.data = {
+          _id: data.slug,
+          text: data.title,
+        };
+        break;
+      case DIALOG_TYPE.REMOVE_PAGE:
+        newDialog.title = `Remove page <b>${data.title}</b>? `;
+        newDialog.data = {
+          _id: data._id,
+          text: data.title,
+        };
+        break;
+      case DIALOG_TYPE.REMOVE_NOTE:
+        newDialog.title = `Remove note <b>${data.title}</b>? `;
+        newDialog.data = {
+          _id: data.slug,
+          text: data.title,
+          page: data.page
+        };
+        break;
+      case DIALOG_TYPE.ADD_NOTE:
+        newDialog.title = `Add new note`;
+        newDialog.data = {
+          _id: data._id,
+          text: "",
+        };
+        break;
+      case DIALOG_TYPE.ADD_PAGE:
+        newDialog.title = `Add new page`;
+        newDialog.data = {
+          _id: "",
+          text: "",
+        };
+        break;
+      default:
+        break;
+    }
+    setDialog(newDialog);
+  };
 
   const handleLogoutClick = () => {
     dispatch(logout());
@@ -78,15 +159,30 @@ export default function SideBar() {
                 <div className={styles.moreBtn}>
                   <Icon icon="ic:outline-more-horiz" />
                   <div className={styles.moreMenu}>
-                    <div className={styles.moreMenuOption}>
+                    <div
+                      className={styles.moreMenuOption}
+                      onClick={() =>
+                        handleOpenDialog(DIALOG_TYPE.ADD_NOTE, item)
+                      }
+                    >
                       <Icon icon="material-symbols:add" />
                       <span>Add</span>
                     </div>
-                    <div className={styles.moreMenuOption}>
+                    <div
+                      className={styles.moreMenuOption}
+                      onClick={() =>
+                        handleOpenDialog(DIALOG_TYPE.RENAME_PAGE, item)
+                      }
+                    >
                       <Icon icon="material-symbols:edit-outline" />
                       <span>Rename</span>
                     </div>
-                    <div className={styles.moreMenuOption}>
+                    <div
+                      className={styles.moreMenuOption}
+                      onClick={() =>
+                        handleOpenDialog(DIALOG_TYPE.REMOVE_PAGE, item)
+                      }
+                    >
                       <Icon icon="uil:trash-alt" />
                       <span>Delete</span>
                     </div>
@@ -119,11 +215,21 @@ export default function SideBar() {
                       <div className={styles.moreBtn}>
                         <Icon icon="ic:outline-more-horiz" />
                         <div className={styles.moreMenu}>
-                          <div className={styles.moreMenuOption}>
+                          <div
+                            className={styles.moreMenuOption}
+                            onClick={() =>
+                              handleOpenDialog(DIALOG_TYPE.RENAME_NOTE, note)
+                            }
+                          >
                             <Icon icon="material-symbols:edit-outline" />
                             <span>Rename</span>
                           </div>
-                          <div className={styles.moreMenuOption}>
+                          <div
+                            className={styles.moreMenuOption}
+                            onClick={() =>
+                              handleOpenDialog(DIALOG_TYPE.REMOVE_NOTE, note)
+                            }
+                          >
                             <Icon icon="uil:trash-alt" />
                             <span>Delete</span>
                           </div>
@@ -137,7 +243,10 @@ export default function SideBar() {
           ))}
           <div className={styles.pageItem}>
             <div className={styles.pageItemBlock}>
-              <div className={styles.pageItemInfo} onClick={handleAddPageClick}>
+              <div
+                className={styles.pageItemInfo}
+                onClick={() => handleOpenDialog(DIALOG_TYPE.ADD_PAGE)}
+              >
                 <Icon
                   icon="material-symbols:add"
                   style={{ fontSize: "20px" }}
@@ -152,6 +261,7 @@ export default function SideBar() {
         <Icon icon="heroicons-outline:logout" />
         <span>Log out</span>
       </div>
+      {dialog.active && <InputDialog {...dialog} cancel={handleResetDialog} />}
     </div>
   );
 }
