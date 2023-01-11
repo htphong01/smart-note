@@ -16,7 +16,7 @@ export default function Header() {
     const { slug } = params;
     const url = `${window.location.origin}/share/${slug}`
     navigator.clipboard.writeText(url);
-    toast.info("Copied to clipboard");
+    toast.info("Copied link to clipboard");
   }
 
   return (

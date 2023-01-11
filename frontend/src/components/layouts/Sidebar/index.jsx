@@ -54,7 +54,9 @@ export default function SideBar() {
     });
   };
 
-  const handleOpenDialog = (type, data) => {
+  const handleOpenDialog = (type, data, event) => {
+    if(event)  event.preventDefault();
+
     const newDialog = {
       active: true,
       title: "",
@@ -217,8 +219,8 @@ export default function SideBar() {
                         <div className={styles.moreMenu}>
                           <div
                             className={styles.moreMenuOption}
-                            onClick={() =>
-                              handleOpenDialog(DIALOG_TYPE.RENAME_NOTE, note)
+                            onClick={(event) =>
+                              handleOpenDialog(DIALOG_TYPE.RENAME_NOTE, note, event)
                             }
                           >
                             <Icon icon="material-symbols:edit-outline" />
@@ -226,8 +228,8 @@ export default function SideBar() {
                           </div>
                           <div
                             className={styles.moreMenuOption}
-                            onClick={() =>
-                              handleOpenDialog(DIALOG_TYPE.REMOVE_NOTE, note)
+                            onClick={(event) =>
+                              handleOpenDialog(DIALOG_TYPE.REMOVE_NOTE, note, event)
                             }
                           >
                             <Icon icon="uil:trash-alt" />

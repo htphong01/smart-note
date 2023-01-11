@@ -36,6 +36,7 @@ export const pageSlice = createSlice({
       const note = action.payload;
       if(!state[note.page].notes) state[note.page].notes = [];
       state[note.page].notes.push(note);
+      state[note.page].isOpen = true;
       return state;
     },
     editNote: (state, action) => {

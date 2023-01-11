@@ -14,13 +14,12 @@ class PageController {
         return res.sendStatus(400);
       }
 
-      console.log(req.user);
-
       const data = {...req.body, user: user._id};
 
       const newPage = await Page.create(data);
       res.json(newPage.toJSON());
     } catch (error) {
+      console.log(error);
       res.sendStatus(500);
     }
   };

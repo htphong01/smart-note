@@ -19,13 +19,15 @@ export default function ShareNote() {
     getNote();
   }, [slug]);
 
+  if(!note?._id) return <></>
+
   return (
     <div>
       <div className={styles.headerWrap}>
         <div className={styles.header}>
-          <img src={note.image || defaultImage} />
+          <img src={note.image || note?.page?.image || defaultImage} />
           <span>
-            {note.title}
+            {note?.page?.title} / {note.title}
           </span>
         </div>
         <Link to="/login" className={styles.btnTry}>Try Smart Note</Link>
